@@ -1,0 +1,19 @@
+<!-- zap_scan/templates/scan.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Scan</title>
+</head>
+<body>
+    <h1>URL Scan</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="url">URL:</label>
+        <input type="text" id="url" name="url">
+        <button type="submit">Scan</button>
+    </form>
+</body>
+</html>
