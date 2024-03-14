@@ -1,5 +1,3 @@
-<!-- zap_scan/templates/scan.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,11 +7,62 @@
 </head>
 <body>
     <h1>URL Scan</h1>
-    <form method="post">
+    <form id="scanForm" method="get"> <!-- Change method to GET -->
         {% csrf_token %}
         <label for="url">URL:</label>
         <input type="text" id="url" name="url">
-        <button type="submit">Scan</button>
+        <button type="submit" id="scanButton">Scan</button>
     </form>
+
+    <div id="scanResults">
+        <!-- Scan results will be displayed here -->
+    </div>
+
+    <script>
+document.getElementById('scanForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Get the URL entered by the user
+    var url = document.getElementById('url').value;
+
+    // Make an AJAX request to initiate the scan
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '{% url "scan_view" %}?url=' + encodeURIComponent(url), true); // Append URL as query parameter
+    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}'); // Include CSRF token
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Parse the JSON response
+                var response = JSON.parse(xhr.responseText);
+
+                // Check if there is an error message
+                if (response.error) {
+                    // Display the error message
+                    document.getElementById('scanResults').innerHTML = '<p>Error: ' + response.error + '</p>';
+                } else {
+                    // Display scan results
+                    var scanResults = response.alerts;
+                    var resultsDiv = document.getElementById('scanResults');
+                    resultsDiv.innerHTML = '<h2>Scan Results:</h2>';
+                    if (scanResults && scanResults.length > 0) {
+                        resultsDiv.innerHTML += '<ul>';
+                        scanResults.forEach(function(alert) {
+                            resultsDiv.innerHTML += '<li>' + alert.alert + '</li>';
+                        });
+                        resultsDiv.innerHTML += '</ul>';
+                    } else {
+                        resultsDiv.innerHTML += '<p>No vulnerabilities found.</p>';
+                    }
+                }
+            } else {
+                console.error('Failed to initiate scan:', xhr.responseText);
+            }
+        }
+    };
+    xhr.send(); // No need to send data for GET request
+});
+</script>
+
+
 </body>
 </html>

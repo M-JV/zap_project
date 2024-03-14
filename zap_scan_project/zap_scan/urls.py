@@ -1,8 +1,6 @@
-# zap_scan/urls.py
-
 from django.urls import path
-from .views import scan_view
+from . import views
 
 urlpatterns = [
-    path('scan/', scan_view, name='scan'),  # Define the URL pattern for the scan_view
+    path('scan/', views.scan_view, name='scan_view'),
 ]
