@@ -7,8 +7,11 @@ from io import StringIO
 import time
 
 def run_scan(target_url):
-    api_key = "lbsfatd3bhkdktpprbtqmk337s"
-    zap = ZAPv2(apikey=api_key)
+    api_key = "f0ht4af3lj2fh3o2falcmor2p8"
+    zap = ZAPv2(apikey=api_key)  # Initialize ZAP object here
+
+    # Clear alerts before starting a new scan
+    zap.core.delete_all_alerts()
 
     print("Starting spider scan...")
     spider_scan_id = zap.spider.scan(target_url)
@@ -26,6 +29,8 @@ def run_scan(target_url):
 
     alerts = zap.core.alerts()
     return alerts
+
+
 
 def json_to_csv_and_save(alerts):
     if not alerts:
@@ -79,4 +84,3 @@ def scan_view(request):
         else:
             return JsonResponse({'error': 'URL parameter is missing'})
     return render(request, 'zap_scan/scan.html')
-
