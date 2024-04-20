@@ -7,7 +7,7 @@ from io import StringIO
 import time
 
 def run_scan(target_url):
-    api_key = "f0ht4af3lj2fh3o2falcmor2p8"
+    api_key = "vfu1rca7ev8lqrge37o43sdsck"
     zap = ZAPv2(apikey=api_key)  # Initialize ZAP object here
 
     # Clear alerts before starting a new scan
