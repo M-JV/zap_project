@@ -2,44 +2,279 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Scan</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="asset/logo.png" type="image/x-icon" />
+    <!-- styles.css -->
+    <link rel="stylesheet" href="{% static "css/styles.css" %}" />
+    <!-- popup.css -->
+    <link rel="stylesheet" href="{% static "css/popup.css" %}" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <title>SurfShield</title>
+    <style>
+      .popUp {
+        display: none; /* Hide the popup by default */
+      }
 
-<body>
-    
+      .BG {
+        min-height: 100vh;
+        max-height: fit-content;
+        width: 100%;
+        background-image: url('{% static "img/BG.png" %}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 4rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+      crossorigin="anonymous"
+    ></script>
     <!-- NAVBAR -->
-  <div class="header">
-    <span class="logo">
-        <img src="{% static 'img/logo.png' %}" class="navLogo" alt="lo" />
-      <p>SurfShield</p>
-    </span>
+    <div class="header">
+      <span class="logo">
+        <img src="{% static "img/logo.png" %}" class="navLogo" alt="lo" />
+        <p>SurfShield</p>
+      </span>
 
-    <div class="link">
-      <a href="#">Home </a>
-      <a href="">About </a>
-      <a href="">Download </a>
+      <div class="link">
+        <a href="index.html">Home </a>
+        <a href="about.html">About </a>
+        <a href="">Download </a>
+      </div>
     </div>
-  </div>
-
-  <!-- HERO SECTION -->
-  <div class="BG">
-    <h1> SCAN THE <span class="rot">WEBSITES</span> THAT YOU ARE WORRIED ABOUT </h1>
-    <form method="post">
-      {% csrf_token %}
-      <div class="space">
+    <!-- HERO SECTION -->
+    <div class="BG">
+      <h1>
+        SCAN THE <span class="rot">WEBSITES</span> THAT YOU ARE WORRIED ABOUT
+      </h1>
+      <form method="post">
+        {% csrf_token %}
+        <div class="space">
           <div class="SCANCOLO">
-              <label for="url">URL:</label>
-              <input type="text" id="url" name="url" placeholder="Enter or paste link here" />
-              <button type="submit">SCAN IT</button>
+            <input type="text" id="url" name="url" placeholder="Enter or paste link here">
+            <button type="submit">SCAN IT</button>
           </div>
           <p>Try our demo to see the magic</p>
-      </div>
-    </form>
-  </div>
+        </div>
+      </form>
+      
 
-</body>
+      <!-- Start of POPUP -->
+      <div class="popUp" id="popup">
+        <span class="title">
+          <h1>Vulnerability Test report</h1>
+
+          <!-- Close button -->
+          <button class="closeButton" id="closeButton">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              class="bi bi-x-lg"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"
+              />
+            </svg>
+          </button>
+        </span>
+        <div class="info">
+          <div class="nav justify-content-center">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="pills-home-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-home"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-home"
+                  aria-selected="true"
+                >
+                  Summary
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="pills-profile-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-profile"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-profile"
+                  aria-selected="false"
+                >
+                  Report
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="pills-contact-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-contact"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-contact"
+                  aria-selected="false"
+                >
+                  AI Chat
+                </button>
+              </li>
+            </ul>
+          </div>
+          <!-- Enter content here -->
+          <div class="justify-content center">
+            <div class="tab-content" id="pills-tabContent">
+              <!-- SUMMERY -->
+              <div
+                class="tab-pane fade show active"
+                id="pills-home"
+                role="tabpanel"
+                aria-labelledby="pills-home-tab"
+                tabindex="0"
+              >
+                <!-- CIRCULAR PROGRESS BAR -->
+                <div class="container-row">
+                  <div class="circularProgressBar1">
+                    <div
+                      class="container"
+                      data-color="#FF0000"
+                      data-max-value="10"
+                    >
+                      <!-- enter datata here -->
+                      <div class="circular-progress">
+                        <div class="value-container">0%</div>
+                      </div>
+                      <div class="boxName">High</div>
+                    </div>
+                  </div>
+                  <div class="circularProgressBar2">
+                    <div
+                      class="container"
+                      data-color="#f1c40f"
+                      data-max-value="80"
+                    >
+                      <div class="circular-progress">
+                        <div class="value-container">0%</div>
+                      </div>
+                      <div class="boxName">Medium</div>
+                    </div>
+                  </div>
+                  <div class="circularProgressBar3">
+                    <div
+                      class="container"
+                      data-color="#42cf95"
+                      data-max-value="60"
+                    >
+                      <div class="circular-progress">
+                        <div class="value-container">0%</div>
+                      </div>
+                      <div class="boxName">Low</div>
+                    </div>
+                  </div>
+                  <div class="circularProgressBar4">
+                    <div
+                      class="container"
+                      data-color="#4d5bf9"
+                      data-max-value="100"
+                    >
+                      <div class="circular-progress">
+                        <div class="value-container">0%</div>
+                      </div>
+                      <div class="boxName">Total Vulnerabilities</div>
+                    </div>
+                  </div>
+                </div>
+                <!-- pbar.js -->
+                <script src="pbar.js"></script>
+              </div>
+              <!-- DETAILED REPORT -->
+              <div
+                class="tab-pane fade"
+                id="pills-profile"
+                role="tabpanel"
+                aria-labelledby="pills-profile-tab"
+                tabindex="0"
+              >
+                sdfwerweftsdfsdfsf
+              </div>
+              <!-- AI CHAT BOT -->
+              <div
+                class="tab-pane fade"
+                id="pills-contact"
+                role="tabpanel"
+                aria-labelledby="pills-contact-tab"
+                tabindex="0"
+              >
+                asdsdfsfsdfsfsf
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-row2">
+          <h2>OVERALL RISK:</h2>
+          <p id="riskLevel">Unknown</p>
+          <!-- Initial risk level is unknown -->
+        </div>
+        <!-- risklevel.js -->
+        <script src="risklevel.js"></script>
+      </div>
+      <!-- End of POPUP -->
+    </div>
+
+    <script>
+      // JavaScript to control the popup visibility
+      const scanForm = document.getElementById("scanForm");
+      const popup = document.getElementById("popup");
+      const closeButton = document.getElementById("closeButton");
+
+      // Handle form submission
+      scanForm.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Show the popup when the form is submitted
+        popup.style.display = "block";
+      });
+
+      // Hide the popup when the close button is clicked
+      closeButton.addEventListener("click", function () {
+        popup.style.display = "none";
+      });
+    </script>
+    <!--  FOOTER SECTION -->
+    <div
+      class="policy"
+      style="background-image: url('{% static 'img/BG.png' %}')"
+    >
+      <p>© 2024 SurfSheild. All rights reserved.</p>
+      <span>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </span>
+    </div>
+  </body>
 </html>
