@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="asset/logo.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="{% static "img/logo.png" %}" type="image/x-icon" />
     <!-- styles.css -->
     <link rel="stylesheet" href="{% static "css/styles.css" %}" />
     <!-- popup.css -->
@@ -210,7 +210,7 @@
                   </div>
                 </div>
                 <!-- pbar.js -->
-                <script src="pbar.js"></script>
+                <script src="{% static "js/pbar.js" %}"></script>
               </div>
               <!-- DETAILED REPORT -->
               <div
@@ -241,7 +241,7 @@
           <!-- Initial risk level is unknown -->
         </div>
         <!-- risklevel.js -->
-        <script src="risklevel.js"></script>
+        <script src="{% static "js/risklevel.js" %}"></script>
       </div>
       <!-- End of POPUP -->
     </div>
