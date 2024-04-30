@@ -59,6 +59,7 @@ html {
   align-items: center;
   justify-content: center;
   padding: 4rem;
+  /* bg2 */
   background-image: URL("asset/bg2.png");
   background-size: cover;
   background-repeat: no-repeat;

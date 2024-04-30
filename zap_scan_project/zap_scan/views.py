@@ -30,8 +30,6 @@ def run_scan(target_url):
     alerts = zap.core.alerts()
     return alerts
 
-
-
 def json_to_csv_and_save(alerts):
     if not alerts:
         return None  # Return None if no alerts are present
