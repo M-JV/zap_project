@@ -7,7 +7,7 @@ from io import StringIO
 import time
 
 def run_scan(target_url):
-    api_key = "vfu1rca7ev8lqrge37o43sdsck"
+    api_key = "j6l7bva0mji6q7qe1v02lll3d7"
     zap = ZAPv2(apikey=api_key)  # Initialize ZAP object here
 
     # Clear alerts before starting a new scan
@@ -39,6 +39,7 @@ def json_to_csv_and_save(alerts):
     return csv_data_str
 
 def scan_view(request):
+    # View function for the scan page
     if request.method == 'POST':
         target_url = request.POST.get('url', '')
         if target_url:
@@ -57,14 +58,14 @@ def scan_view(request):
                             other=row['other'],
                             method=row['method'],
                             evidence=row['evidence'],
-                            pluginId=row['pluginId'],  # Corrected from pluginid to pluginId
+                            pluginId=row['pluginId'],  
                             cweid=row['cweid'],
-                            confidence=row['confidence'],  # Corrected from comfidence to confidence
+                            confidence=row['confidence'],  
                             wascid=row['wascid'],
-                            messageId=row['messageId'],  # Corrected from messageId to messageId
+                            messageId=row['messageId'],  
                             inputVector=row['inputVector'],
                             url=row['url'],
-                            reference=row['reference'],  # Corrected from reference to reference
+                            reference=row['reference'],  
                             alert=row['alert'],
                             param=row['param'],
                             attack=row['attack'],
@@ -76,9 +77,37 @@ def scan_view(request):
                         )
                         for row in alert_objects
                     ])
-                return JsonResponse({'success': 'Scan completed and data saved successfully.'})
+                 
+                    # Calculate alert counts
+                    low_count, medium_count, high_count, total_count = calculate_alert_counts(alerts)
+                 
+                    # Redirect to the result page with alert counts as URL parameters
+                    return redirect('result_page', high_count=high_count, medium_count=medium_count, low_count=low_count, total_count=total_count)
+                else:
+                    return JsonResponse({'error': 'No alerts found'})
             except Exception as e:
                 return JsonResponse({'error': str(e)})
         else:
             return JsonResponse({'error': 'URL parameter is missing'})
     return render(request, 'zap_scan/scan.html')
+
+
+def result_page(request, high_count, medium_count, low_count, total_count):
+    # View function for the result page
+    return render(request, 'zap_scan/result_page.html', {
+        'high_count': high_count,
+        'medium_count': medium_count,
+        'low_count': low_count,
+        'total_count': total_count,
+    })
+
+def calculate_alert_counts(alerts):
+    # Calculate counts for low, medium, high, and total alerts
+    low_count = sum(1 for alert in alerts if alert['risk'] == 'Low')
+    medium_count = sum(1 for alert in alerts if alert['risk'] == 'Medium')
+    high_count = sum(1 for alert in alerts if alert['risk'] == 'High')
+    total_count = len(alerts)
+    return low_count, medium_count, high_count, total_count
+
+
+
