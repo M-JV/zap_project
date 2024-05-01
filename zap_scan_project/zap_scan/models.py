@@ -1,4 +1,4 @@
-#zap_scan/models.py
+#zap_project/zap_scan/models.py
 from django.db import models
 
 # Create your models here.

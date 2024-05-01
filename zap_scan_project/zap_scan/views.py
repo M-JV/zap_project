@@ -1,3 +1,4 @@
+#zap_project/zap_scan/views.py
 from django.http import JsonResponse
 from django.shortcuts import render
 from .models import Alert
@@ -47,42 +48,51 @@ def scan_view(request):
                 # Delete all existing Alert objects before running the scan
                 Alert.objects.all().delete()
 
+                # Run the scan
                 alerts = run_scan(target_url)
-                csv_data_str = json_to_csv_and_save(alerts)
-                if csv_data_str is not None:
-                    csv_data = StringIO(csv_data_str)
-                    alert_objects = pd.read_csv(csv_data).to_dict('records')
-                    Alert.objects.bulk_create([
-                        Alert(
-                            sourceid=row['sourceid'],
-                            other=row['other'],
-                            method=row['method'],
-                            evidence=row['evidence'],
-                            pluginId=row['pluginId'],  
-                            cweid=row['cweid'],
-                            confidence=row['confidence'],  
-                            wascid=row['wascid'],
-                            messageId=row['messageId'],  
-                            inputVector=row['inputVector'],
-                            url=row['url'],
-                            reference=row['reference'],  
-                            alert=row['alert'],
-                            param=row['param'],
-                            attack=row['attack'],
-                            alertRef=row['alertRef'],
-                            name=row['name'],
-                            risk=row['risk'],
-                            description=row['description'],
-                            solution=row['solution'],
-                        )
-                        for row in alert_objects
-                    ])
-                 
+
+                # Save alerts to the database
+                if alerts:
+                    csv_data_str = json_to_csv_and_save(alerts)
+                    if csv_data_str:
+                        csv_data = StringIO(csv_data_str)
+                        alert_objects = pd.read_csv(csv_data).to_dict('records')
+                        Alert.objects.bulk_create([
+                            Alert(
+                                sourceid=row['sourceid'],
+                                other=row['other'],
+                                method=row['method'],
+                                evidence=row['evidence'],
+                                pluginId=row['pluginId'],  
+                                cweid=row['cweid'],
+                                confidence=row['confidence'],  
+                                wascid=row['wascid'],
+                                messageId=row['messageId'],  
+                                inputVector=row['inputVector'],
+                                url=row['url'],
+                                reference=row['reference'],  
+                                alert=row['alert'],
+                                param=row['param'],
+                                attack=row['attack'],
+                                alertRef=row['alertRef'],
+                                name=row['name'],
+                                risk=row['risk'],
+                                description=row['description'],
+                                solution=row['solution'],
+                            )
+                            for row in alert_objects
+                        ])
+
                     # Calculate alert counts
                     low_count, medium_count, high_count, total_count = calculate_alert_counts(alerts)
-                 
-                    # Redirect to the result page with alert counts as URL parameters
-                    return redirect('result_page', high_count=high_count, medium_count=medium_count, low_count=low_count, total_count=total_count)
+
+                    # Return the alert counts as JSON response
+                    return JsonResponse({
+                        'low_count': low_count,
+                        'medium_count': medium_count,
+                        'high_count': high_count,
+                        'total_count': total_count
+                    })
                 else:
                     return JsonResponse({'error': 'No alerts found'})
             except Exception as e:
@@ -92,14 +102,6 @@ def scan_view(request):
     return render(request, 'zap_scan/scan.html')
 
 
-def result_page(request, high_count, medium_count, low_count, total_count):
-    # View function for the result page
-    return render(request, 'zap_scan/result_page.html', {
-        'high_count': high_count,
-        'medium_count': medium_count,
-        'low_count': low_count,
-        'total_count': total_count,
-    })
 
 def calculate_alert_counts(alerts):
     # Calculate counts for low, medium, high, and total alerts

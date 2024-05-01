@@ -1,3 +1,4 @@
+{% comment %} zap_scan_project/zap_scan/templates/scan.html {% endcomment %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -135,7 +136,7 @@
                                 <div class="container" data-color="#FF0000" data-max-value="10">
                                     <!-- enter data here -->
                                     <div class="circular-progress">
-                                        <div class="value-container">0%</div>
+                                        <div class="value-container">0</div>
                                     </div>
                                     <div class="boxName">High</div>
                                 </div>
@@ -143,7 +144,7 @@
                             <div class="circularProgressBar2">
                                 <div class="container" data-color="#f1c40f" data-max-value="20">
                                     <div class="circular-progress">
-                                        <div class="value-container">0%</div>
+                                        <div class="value-container">0</div>
                                     </div>
                                     <div class="boxName">Medium</div>
                                 </div>
@@ -151,7 +152,7 @@
                             <div class="circularProgressBar3">
                                 <div class="container" data-color="#42cf95" data-max-value="60">
                                     <div class="circular-progress">
-                                        <div class="value-container">0%</div>
+                                        <div class="value-container">0</div>
                                     </div>
                                     <div class="boxName">Low</div>
                                 </div>
@@ -159,7 +160,7 @@
                             <div class="circularProgressBar4">
                                 <div class="container" data-color="#4d5bf9" data-max-value="100">
                                     <div class="circular-progress">
-                                        <div class="value-container">0%</div>
+                                        <div class="value-container">0</div>
                                     </div>
                                     <div class="boxName">Total Vulnerabilities</div>
                                 </div>
@@ -194,9 +195,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <script src="{% static 'js/pbar.js' %}"></script>
 <script src="{% static 'js/risklevel.js' %}"></script>
-</body>
 
 <!-- JavaScript code -->
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     // Wait for the DOM to be fully loaded
@@ -233,6 +234,9 @@
 
                     // Display the popUp div if the scan was successful
                     popUp.style.display = "block";
+
+                    // Call the function to update progress bars
+                    updateProgressBars(response);
                 } else {
                     console.error("Scan request failed");
 
@@ -256,6 +260,49 @@
             popUp.style.display = "none";
         });
     });
+
+    function updateProgressBars(response) {
+        // Parse the response JSON to get the counts
+        response.json().then(data => {
+            console.log("Response data:", data);
+    
+            // Get the counts of high, medium, and low alerts from the response
+            const highCount = data.high_count;
+            const mediumCount = data.medium_count;
+            const lowCount = data.low_count;
+            const totalCount = highCount + mediumCount + lowCount;
+            console.log("High Count:", highCount);
+            console.log("Medium Count:", mediumCount);
+            console.log("Low Count:", lowCount);
+            console.log("Total Count:", totalCount);
+    
+            // Calculate percentages
+            const highPercentage = (highCount);
+            const mediumPercentage = (mediumCount);
+            const lowPercentage = (lowCount);
+            console.log("High Percentage:", highPercentage);
+            console.log("Medium Percentage:", mediumPercentage);
+            console.log("Low Percentage:", lowPercentage);
+    
+            // Update the width or value of each progress bar based on the calculated percentages
+            document.querySelector('.circularProgressBar1 .circular-progress').style.strokeDashoffset = `calc(440 - (440 * ${highPercentage}) / 100)`;
+            document.querySelector('.circularProgressBar2 .circular-progress').style.strokeDashoffset = `calc(440 - (440 * ${mediumPercentage}) / 100)`;
+            document.querySelector('.circularProgressBar3 .circular-progress').style.strokeDashoffset = `calc(440 - (440 * ${lowPercentage}) / 100)`;
+
+            // Update the value containers with the current progress percentage
+            document.querySelector('.circularProgressBar1 .value-container').textContent = `${Math.round(highPercentage)}`;
+            document.querySelector('.circularProgressBar2 .value-container').textContent = `${Math.round(mediumPercentage)}`;
+            document.querySelector('.circularProgressBar3 .value-container').textContent = `${Math.round(lowPercentage)}`;
+
+            // Update the total vulnerabilities count
+            document.querySelector('.circularProgressBar4 .value-container').textContent = `${totalCount}`;
+        });
+    }
 </script>
+
+
+    
+</script>
+</body>
 
 </html>
