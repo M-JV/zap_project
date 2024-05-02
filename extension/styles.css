@@ -1,0 +1,167 @@
+/* styles.css */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background-color: #148687;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.navbar2 {
+  background-color: #c4c1c1;
+  overflow: hidden;
+  padding: 2.5px;
+  font-family: 'Audiowide';
+  font-weight: bold;
+
+
+
+}
+
+.logo-text {
+  color: white;
+  font-weight: bold;
+  font-family: 'Audiowide';
+  font-size: 1.3rem;
+  /* Apply Audiowide font */
+  margin-right: 15rem;
+  margin-top: 1rem;
+
+
+}
+
+.logo-text3 {
+  overflow: hidden;
+  margin-left: .5rem;
+  font-family: 'Audiowide';
+
+  
+}
+
+OVERALL RISK LEVELS */ #riskLevel {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-left: 10rem;
+}
+
+.low {
+  background-color: green;
+  color: white;
+}
+
+.medium {
+  background-color: yellow;
+  color: black;
+
+}
+
+.high {
+  background-color: red;
+  color: white;
+}
+
+.container-row2 {
+  margin-top: 20px;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.low,
+.medium,
+.high {
+  font-size: large;
+  padding: 20px;
+  border: 1px brown solid;
+}
+
+
+
+.boxName {
+  font-size: larger;
+  font-weight: bolder;
+}
+
+.logo-text2 {
+  color: rgb(60, 70, 216);
+  font-weight: bold;
+  font-family: 'Audiowide';
+  /* Apply Audiowide font */
+margin-left: 2rem ;
+}
+
+.logo {
+  width: 50px;
+  /* Reduced size */
+  height: auto;
+  float: left;
+  margin-right: 15px;
+  margin-top: 1rem;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  /* Reduced size */
+  height: 24px;
+  /* Reduced size */
+  float: right;
+}
+
+/* Additional styles for risk status indicator */
+
+.hero {
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.risk-status {
+  font-size: 18px;
+  margin-top: 5px;
+}
+
+.risk-level {
+  font-weight: bold;
+}
+
+.box {
+  display: inline-block;
+  padding: 5px 10px;
+  margin-right: 10px;
+}
+.line{
+  margin: 2rem;
+  
+}
+
+.setting-icon {
+  /* Add styles for setting icon */
+  /* You can use a background image or icon font for the setting icon */
+  /* Example: */
+  background-image: url('setting-icon.png');
+  /* Add path to your setting icon image */
+  width: 24px;
+  height: 24px;
+  background-size: cover;
+  display: inline-block;
+}
+.progress-stacked{
+  height: 3rem;
+  margin-bottom: 1rem;
+}
+.progress{
+  height: 2rem;
+}
+.progress-bar{
+  color: black;
+  font-weight: 800;
+}
