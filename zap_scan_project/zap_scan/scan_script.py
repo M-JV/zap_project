@@ -1,4 +1,3 @@
-#zap_project/zap_scan/scan_script.py
 from django.shortcuts import render
 from django.http import JsonResponse
 from .scan_script import run_scan
@@ -15,3 +14,16 @@ def scan_view(request):
         else:
             return JsonResponse({'error': 'URL parameter is missing'})
     return render(request, 'zap_scan/scan.html')
+
+def scan_progress(request):
+    if request.method == 'POST':
+        target_url = request.POST.get('url', '')
+        if target_url:
+            try:
+                scan_progress = run_scan(target_url)
+                return JsonResponse({'progress': scan_progress})
+            except Exception as e:
+                return JsonResponse({'error': str(e)})
+        else:
+            return JsonResponse({'error': 'URL parameter is missing'})
+    return JsonResponse({'error': 'Invalid request method'})

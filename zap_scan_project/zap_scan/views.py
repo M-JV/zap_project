@@ -1,12 +1,14 @@
 #zap_project/zap_scan/views.py
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from .models import Alert
 from zapv2 import ZAPv2
 import pandas as pd
 from io import StringIO
 import time
 import os
+import json
 
 
 def run_scan(target_url):
@@ -149,3 +151,53 @@ def save_csv_to_file(csv_data_str):
         csv_file.write(csv_data_str)
 
     return file_path
+
+def detailed_report_view(request):
+    # Fetching data from the Alert model for the detailed report
+    alerts = Alert.objects.all()
+
+    context = {
+        'alerts': alerts
+    }
+
+    return render(request, 'zap_scan/scan.html', context)
+
+@csrf_exempt
+def chrome_scan_view(request):
+    if request.method == 'OPTIONS':
+        response = JsonResponse({})
+        response["Access-Control-Allow-Origin"] = "*"
+        response["Access-Control-Allow-Methods"] = "POST"
+        response["Access-Control-Allow-Headers"] = "Content-Type"
+        return response
+
+    elif request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            target_url = data.get('url', '')
+            if target_url:
+                # Run the scan
+                alerts = run_scan(target_url)
+
+                # Calculate alert counts
+                low_count, medium_count, high_count, total_count = calculate_alert_counts(alerts)
+
+                # Return the alert counts as JSON response
+                response = {
+                    'low_count': low_count,
+                    'medium_count': medium_count,
+                    'high_count': high_count,
+                    'total_count': total_count
+                }
+
+                # Add headers to allow requests from any origin
+                response["Access-Control-Allow-Origin"] = "*"
+                response["Access-Control-Allow-Methods"] = "POST"
+
+                return JsonResponse(response)
+            else:
+                return JsonResponse({'error': 'URL parameter is missing'})
+        except Exception as e:
+            return JsonResponse({'error': str(e)})
+
+    return JsonResponse({'error': 'Invalid request method'})
