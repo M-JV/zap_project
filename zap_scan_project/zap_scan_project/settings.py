@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'zap_scan',
     'report',
     'corsheaders',
+    'bot'
 ]
 
 MIDDLEWARE = [
