@@ -26,7 +26,7 @@ config = {
     }
   }
 }
-os.environ["GOOGLE_API_KEY"] = "AIzaSyA5TNy9L5i56_PG3hTgQYz5rN99rYHZiBc"
+os.environ["GOOGLE_API_KEY"] = "AIzaSyCsAY9ytGJ242yBS_3OVDc6EN5gq7luFFw"
 
 def initialize_app():
     global app

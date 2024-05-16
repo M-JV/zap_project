@@ -31,8 +31,8 @@ app=App.from_config(config=config)
 def ask(request):
     if request.method == "POST":
         text = request.POST.get("text")
-        app.add('/home/mejova/zap_project/zap_scan_project/csv_output/scan_results.csv',data_type='csv')
-        app.add('/home/mejova/zap_project/zap_scan_project/csv_output/scan_results.csv',data_type='web_page')
+        app.add('zap_scan_project/csv_output/scan_results.csv',data_type='csv')
+        app.add('http://127.0.0.1:8000/report/',data_type='web_page')
         response = app.query(text)
         
         # Extract necessary data from response
